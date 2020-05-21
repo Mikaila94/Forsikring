@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+
+  .innerContainer {
+    max-width: 500px;
+
+    .title {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .ingress {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    :global(.textInput) {
+      margin-bottom: 2rem;
+    }
+
+    .nameContainer {
+      display: flex;
+      flex-direction: column;
+
+      @media screen and (min-width: 1000px) {
+        flex-direction: row;
+
+        :global(.textInput):first-child {
+          margin-right: 2rem;
+        }
+      }
+    }
+
+    .buttons {
+      margin-top: 3rem;
+
+      :first-child {
+        margin-right: 2rem;
+      }
+    }
+  }
+}

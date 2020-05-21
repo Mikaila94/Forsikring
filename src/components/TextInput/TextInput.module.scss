@@ -1,0 +1,26 @@
+.textInputContainer {
+  display: flex;
+  flex-direction: column;
+
+  .textInput {
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    width: 12rem;
+    font-size: 1rem;
+    padding-bottom: 0.6em;
+  }
+
+  .label {
+    font-size: 1rem;
+    margin-bottom: 0.5em;
+  }
+
+  .helpText {
+    color: blue;
+  }
+
+  .errorMessage {
+    color: red;
+  }
+}
