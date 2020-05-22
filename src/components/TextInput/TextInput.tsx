@@ -9,8 +9,6 @@ interface Props {
   className?: string;
   placeholder?: string;
   errorMessage?: string;
-  helpText?: string;
-  type?: string;
 }
 
 export default function TextInput({
@@ -21,15 +19,13 @@ export default function TextInput({
   className,
   placeholder,
   errorMessage,
-  helpText,
-  type,
 }: Props) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) onChange(event);
   };
 
   return (
-    <div className={`${css.textInputContainer} textInput ${className}`}>
+    <div className={`${css.textInputContainer} inputElement ${className}`}>
       <label className={css.label} htmlFor={id}>
         {label}
       </label>
@@ -40,9 +36,7 @@ export default function TextInput({
         onChange={handleChange}
         value={value}
         placeholder={placeholder}
-        type={type}
       />
-      {helpText && <p className={css.helpText}>{helpText}</p>}
       {errorMessage && <p className={css.errorMessage}>{errorMessage}</p>}
     </div>
   );

@@ -4,6 +4,8 @@ import TextInput from "components/TextInput";
 import Button from "components/Button";
 import Select from "components/Select";
 import isFodselsNummer from "util/isFodselsNummer";
+import { isEmail, isCarNumber } from "util/validators";
+import { formatMoney } from "util/format";
 
 interface Values {
   bilNummer: string;
@@ -33,6 +35,7 @@ export default function App() {
   });
 
   const [errors, setErrors] = useState<Errors>({});
+  const [isValid, setIsValid] = useState<Boolean>(false);
 
   const handleChange = (
     event:
@@ -45,12 +48,16 @@ export default function App() {
   };
 
   const validate = () => {
-    const { bilNummer, fornavn, etternavn, fodselsnummer } = values;
+    //reset errors
+    setErrors({});
     let foundErrors: Errors = {};
+    const { bilNummer, fornavn, etternavn, fodselsnummer, epost } = values;
 
-    const registreringsnummerRegExp = new RegExp("^[A-Z]{2}[0-9]{5}$");
-    if (!bilNummer.match(registreringsnummerRegExp)) {
-      foundErrors = { ...foundErrors, bilNummer: "Ugyldig bilnummer" };
+    if (!isCarNumber(bilNummer)) {
+      foundErrors = {
+        ...foundErrors,
+        bilNummer: "Skriv inn et gyldig bilnummer (e.g AB 12345)",
+      };
     }
 
     if (!(fornavn.length > 0)) {
@@ -62,19 +69,25 @@ export default function App() {
     }
 
     if (!isFodselsNummer(fodselsnummer)) {
-      foundErrors = { ...foundErrors, fodselsnummer: "Ugyldig fødselsnummer" };
+      foundErrors = {
+        ...foundErrors,
+        fodselsnummer: "Skriv inn et gyldig fødselsnummer (e.g 12345612345)",
+      };
     }
 
-    if (true) {
-      foundErrors = { ...foundErrors, epost: "Ugyldig epost" };
+    if (!isEmail(epost)) {
+      foundErrors = {
+        ...foundErrors,
+        epost: "Skriv inn en gyldig epostadresse (e.g test@mail.com)",
+      };
     }
 
     if (Object.keys(foundErrors).some((error) => error)) {
       setErrors(foundErrors);
-      return false;
+      setIsValid(false);
+      return;
     }
-
-    return true;
+    setIsValid(true);
   };
 
   return (
@@ -103,6 +116,8 @@ export default function App() {
             label="Din bonus"
             onChange={handleChange}
             value={values.bonus}
+            placeholder="Velg bonus"
+            helpText="Hjelpetekst står her"
           />
 
           <TextInput
@@ -139,7 +154,6 @@ export default function App() {
             value={values.epost}
             label="Epost"
             id="epost"
-            type="email"
             placeholder="myemail@domain.com"
             errorMessage={errors.epost}
           />
@@ -150,6 +164,12 @@ export default function App() {
           </div>
         </form>
       </div>
+
+      {isValid && (
+        <p className={css.price}>
+          Estimert pris: {formatMoney(values.bonus * 500)}
+        </p>
+      )}
     </div>
   );
 }
